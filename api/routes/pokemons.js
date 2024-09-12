@@ -4,8 +4,8 @@ const axios = require("axios");
 const router = express.Router();
 
 // Ruta para obtener datos de un Pokémon desde la PokéAPI
-router.get("/:name", async (req, res) => {
-  const numberPokemons = req.params.name;
+router.get("/", async (req, res) => {
+  const numberPokemons = req.query.limit || 10;
 
   try {
     // Hacer la solicitud a la PokéAPI usando axios
