@@ -1,6 +1,21 @@
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
-import ExploreContainer from '../components/ExploreContainer';
-import './Home.css';
+import {
+  IonContent,
+  IonHeader,
+  IonPage,
+  IonTitle,
+  IonToolbar,
+} from "@ionic/react";
+import ExploreContainer from "../../components/ExploreContainer";
+import "./HomePage.css";
+
+const fetchPokemos = async (page: number) => {
+  return await fetch("urlpokemon")
+    .then(async (res) => {
+      if (!res.ok) throw new Error("Error en la peticion");
+      return await res.json();
+    })
+    .then((res) => res.result);
+};
 
 const Home: React.FC = () => {
   return (
