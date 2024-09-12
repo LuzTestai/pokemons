@@ -7,17 +7,29 @@ import {
 } from "@ionic/react";
 import ExploreContainer from "../../components/ExploreContainer";
 import "./HomePage.css";
+import { useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
 
-const fetchPokemos = async (page: number) => {
-  return await fetch("urlpokemon")
-    .then(async (res) => {
-      if (!res.ok) throw new Error("Error en la peticion");
-      return await res.json();
-    })
-    .then((res) => res.result);
+const fetchPokemons = async (limit: number) => {
+  const response = await fetch(
+    `http://localhost:3001/api/pokemons?limit=${limit}`
+  );
+  if (!response.ok) {
+    throw new Error("Error fetching Pokémon");
+  }
+  return response.json();
 };
 
 const Home: React.FC = () => {
+  const limit = 10;
+  const { data, error, isLoading } = useQuery({
+    queryKey: ["pokemons", limit],
+    queryFn: () => fetchPokemons(limit),
+  });
+
+  useEffect(() => {
+    console.log("data", data);
+  }, [data]);
   return (
     <IonPage>
       <IonHeader>
