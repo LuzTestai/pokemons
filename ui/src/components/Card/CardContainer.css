@@ -1,0 +1,43 @@
+@keyframes zoomInOut {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+.centered-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.3s ease-in-out;
+  background-image: repeating-radial-gradient(#00000021, transparent 10%);
+}
+.centered-card:hover {
+  transform: scale(1.1); /* Aumenta el tamaño cuando pasa el mouse */
+}
+
+.centered-card:active {
+  transform: scale(0.95); /* Disminuye un poco el tamaño cuando se hace clic */
+}
+
+.centered-card-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.centered-card-content {
+  text-align: center;
+}
+
+.letter-title {
+  font-family: monospace;
+  font-size: x-large;
+  text-transform: uppercase;
+  color: #000000a8;
+}

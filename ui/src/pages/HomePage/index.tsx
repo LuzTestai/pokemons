@@ -9,6 +9,9 @@ import ExploreContainer from "../../components/ExploreContainer";
 import "./HomePage.css";
 import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
+import Card from "../../components/Card";
+import { Pokemons } from "../../types/pokemonsTypes";
+import CardsContainer from "../../components/CardsContainer";
 
 const fetchPokemons = async (limit: number) => {
   const response = await fetch(
@@ -34,7 +37,13 @@ const Home: React.FC = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Blank</IonTitle>
+          <IonTitle>
+            <img
+              src="/pokemon-logo-pokemon-icon-transparent-free-png.webp"
+              alt="Pokemon Logo"
+              style={{ maxWidth: "20%" }}
+            />
+          </IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
@@ -43,7 +52,8 @@ const Home: React.FC = () => {
             <IonTitle size="large">Blank</IonTitle>
           </IonToolbar>
         </IonHeader>
-        <ExploreContainer />
+        <p>filtro quizas</p>
+        <CardsContainer pokemons={data} />
       </IonContent>
     </IonPage>
   );
