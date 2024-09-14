@@ -5,7 +5,6 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
-import ExploreContainer from "../../components/ExploreContainer";
 import "./HomePage.css";
 import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
@@ -24,15 +23,12 @@ const fetchPokemons = async (limit: number) => {
 };
 
 const Home: React.FC = () => {
-  const limit = 10;
+  const limit = 12;
   const { data, error, isLoading } = useQuery({
     queryKey: ["pokemons", limit],
     queryFn: () => fetchPokemons(limit),
   });
 
-  useEffect(() => {
-    console.log("data", data);
-  }, [data]);
   return (
     <IonPage>
       <IonHeader>

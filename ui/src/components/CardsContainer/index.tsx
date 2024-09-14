@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { box } from "../../../styled-system/patterns"; // Utilidades de PandaCSS
 import Card from "../Card"; // Importa el componente Card
 import { Pokemons } from "../../types/pokemonsTypes";
 import { IonGrid, IonRow, IonCol } from "@ionic/react";
@@ -21,11 +20,6 @@ const CardsContainer: React.FC<CardsContainerProps> = ({ pokemons }) => {
     return <div>Cargando...</div>;
   }
   return (
-    // <div className="cards-container">
-    //   {pokemons?.map((pokemon) => (
-    //     <Card key={pokemon.name} pokemon={pokemon} /> // Mapea y renderiza las cartas
-    //   ))}
-    // </div>
     <IonGrid>
       <IonRow>
         {pokemons.map((pokemon) => (
@@ -35,6 +29,7 @@ const CardsContainer: React.FC<CardsContainerProps> = ({ pokemons }) => {
             size-md="4"
             size-lg="3"
             key={pokemon.name}
+            className="cards-container"
           >
             <Card pokemon={pokemon} />
           </IonCol>

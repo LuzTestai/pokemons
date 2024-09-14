@@ -20,7 +20,6 @@ const Card: React.FC<PokemonCardProps> = ({ pokemon }) => {
   const [loading, setLoading] = useState(true); // Estado local para manejar el "loading"
 
   useEffect(() => {
-    console.log("POKEMON", pokemon);
     if (pokemon && pokemon.types) {
       setLoading(false); // Cuando los datos están listos, cambiamos loading a false
     }
@@ -30,17 +29,13 @@ const Card: React.FC<PokemonCardProps> = ({ pokemon }) => {
     return <div>Cargando...</div>;
   }
   const primaryType = pokemon.types[0].toLowerCase();
-  const backgroundColor =
-    typeColorMap[primaryType as PokemonType] || "colors.gray.100";
-  console.log("background", backgroundColor);
+  const backgroundColor = typeColorMap[primaryType as PokemonType] || "#87b8fb";
   return (
-    // <div className={css({ bg: backgroundColor })} style={{ backgroundColor: backgroundColor }}>
     <div>
       <IonCard
         className="centered-card"
         style={{
           backgroundColor: backgroundColor,
-          maxWidth: "80%",
         }}
       >
         <IonCardHeader className="centered-card-header">

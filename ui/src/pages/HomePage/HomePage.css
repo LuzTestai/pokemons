@@ -1,3 +1,11 @@
 .bgToolbar {
   background-color: "#0000ff";
 }
+
+ion-content::part(background) {
+  background-color: rgb(0, 0, 3); /* Cambia el fondo */
+}
+
+ion-toolbar {
+  --background: #000000 !important; /* Color de fondo */
+}

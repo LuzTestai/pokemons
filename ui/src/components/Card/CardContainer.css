@@ -12,13 +12,17 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   border-radius: 50%;
   cursor: pointer;
   transition: transform 0.3s ease-in-out;
   background-image: repeating-radial-gradient(#00000021, transparent 10%);
+  max-width: 250px;
+  min-width: 200px;
+  padding: 10px;
 }
 .centered-card:hover {
-  transform: scale(1.1); /* Aumenta el tamaño cuando pasa el mouse */
+  transform: scale(1.1); /* Disminuye un poco el tamaño cuando se hace clic */
 }
 
 .centered-card:active {
@@ -40,4 +44,11 @@
   font-size: x-large;
   text-transform: uppercase;
   color: #000000a8;
+}
+
+@media (max-width: 768px) {
+  .centered-card {
+    margin: 10px 45px;
+    padding: 20px;
+  }
 }
