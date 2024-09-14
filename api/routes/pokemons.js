@@ -6,7 +6,7 @@ const router = express.Router();
 
 // Ruta para obtener la lista de Pokémon y enriquecerla con los tipos y la imagen
 router.get("/", async (req, res) => {
-  const limit = req.query.limit || 10; // Obtener el límite de la consulta
+  const limit = req.query.limit || 12; // Obtener el límite de la consulta
 
   try {
     // Llamada inicial a la API para obtener la lista de Pokémon
