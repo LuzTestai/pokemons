@@ -1,21 +1,22 @@
-// routes/pokemon.js
 const express = require("express");
 const axios = require("axios");
 const router = express.Router();
-// const limit = req.query.limit || 10; // Obtener el límite de la consulta
 
-// Ruta para obtener la lista de Pokémon y enriquecerla con los tipos y la imagen
+// Ruta para obtener la lista de Pokémon con paginación
 router.get("/", async (req, res) => {
-  const limit = req.query.limit || 12; // Obtener el límite de la consulta
+  const limit = parseInt(req.query.limit) || 12; // Número de Pokémon por página
+  const page = parseInt(req.query.page) || 1; // Número de página actual
+  const offset = (page - 1) * limit; // Calcular el desplazamiento
 
   try {
     // Llamada inicial a la API para obtener la lista de Pokémon
     const response = await axios.get(
-      `https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=0`
+      `https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`
     );
     const pokemonList = response.data.results;
+    const totalPokemons = response.data.count; // Total de Pokémon disponibles en la API
 
-    // Hacer una llamada a la API de cada Pokémon para obtener más detalles, como el tipo y la imagen
+    // Hacer una llamada a la API de cada Pokémon para obtener más detalles
     const pokemonDetailsPromises = pokemonList.map(async (pokemon) => {
       const pokemonDetailResponse = await axios.get(pokemon.url); // Llamada a la URL del Pokémon individual
       const types = pokemonDetailResponse.data.types.map(
@@ -34,8 +35,13 @@ router.get("/", async (req, res) => {
     // Esperar a que todas las promesas se resuelvan
     const enrichedPokemonList = await Promise.all(pokemonDetailsPromises);
 
-    // Enviar la lista de Pokémon enriquecida con los tipos y la imagen
-    res.json(enrichedPokemonList);
+    // Devolver la lista enriquecida de Pokémon y la información de paginación
+    res.json({
+      pokemons: enrichedPokemonList,
+      currentPage: page,
+      totalPages: Math.ceil(totalPokemons / limit), // Calcula el número total de páginas
+      totalPokemons: totalPokemons, // Devolver el total de Pokémon disponibles
+    });
   } catch (error) {
     console.error("Error fetching Pokémon:", error.message);
     res.status(500).json({ error: "Error fetching Pokémon data" });
@@ -43,20 +49,20 @@ router.get("/", async (req, res) => {
 });
 
 // Ruta para obtener los tipos de un Pokémon dado su nombre
-router.get("/:name", async (req, res) => {
-  const pokemonName = req.params.name.toLowerCase(); // Obtener el nombre del Pokémon de los parámetros de la URL
+router.get("/pokemons/:name", async (req, res) => {
+  const pokemonName = req.params.name.toLowerCase(); // Obtener el nombre del Pokémon
 
   try {
-    // Llamada a la API de PokéAPI usando Axios
+    // Llamada a la API de PokéAPI
     const response = await axios.get(
       `https://pokeapi.co/api/v2/pokemon/${pokemonName}`
     );
     const pokemonData = response.data;
 
-    // Extraer el/los tipos del Pokémon
+    // Extraer los tipos del Pokémon
     const types = pokemonData.types.map((typeInfo) => typeInfo.type.name);
 
-    // Enviar los tipos de vuelta al cliente
+    // Devolver los tipos
     res.json({ types });
   } catch (error) {
     console.error("Error fetching Pokémon:", error.message);

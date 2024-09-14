@@ -1,0 +1,26 @@
+/* Contenedor del filtro */
+.filter-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  width: 30%;
+}
+
+/* Estilo personalizado para IonSearchbar */
+.custom-searchbar {
+  --background: transparent; /* Fondo transparente */
+  --border-color: yellow; /* Color del borde inferior */
+  --placeholder-color: yellow; /* Color del placeholder */
+  --color: yellow; /* Color del texto */
+  border-bottom: 1px solid yellow; /* Borde inferior personalizado */
+  width: 100%;
+  border-bottom-style: hidden;
+}
+
+@media (max-width: 768px) {
+  /* Contenedor del filtro */
+  .filter-container {
+    width: 80%;
+  }
+}

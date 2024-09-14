@@ -1,11 +1,32 @@
-.bgToolbar {
-  background-color: "#0000ff";
-}
-
 ion-content::part(background) {
-  background-color: rgb(0, 0, 3); /* Cambia el fondo */
+  background-color: #000003; /* Cambia el fondo */
+}
+ion-toolbar {
+  --background: #000003ee; /* Color de fondo */
+}
+.pagination-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
 }
 
-ion-toolbar {
-  --background: #000000 !important; /* Color de fondo */
+.pagination-controls span {
+  margin: 0 15px;
+}
+.container-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.custom-loading {
+  --background: transparent; /* Fondo transparente */
+  --spinner-color: #fcff00;
+}
+.custom-loading .spinner-bubbles {
+  transform: scale(1.5); /* Ajusta el tamaño del spinner */
+}
+.loading-wrapper.sc-ion-loading-md {
+  box-shadow: none !important;
 }
