@@ -1,0 +1,28 @@
+.login-page {
+  background-color: #000; /* Fondo negro */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.login-title {
+  padding-top: 50px;
+  color: #ff0;
+  font-size: xx-large;
+  text-transform: uppercase;
+  font-family: system-ui;
+}
+
+.login-grid {
+  width: 100%;
+  height: 100vh; /* Hace que el grid ocupe toda la altura de la pantalla */
+}
+
+.login-col {
+  padding: 30px; /* Padding alrededor del formulario */
+  border: 1px solid #ff0; /* Borde amarillo */
+  background-color: rgba(59, 191, 26, 0.1); /* Fondo ligeramente transparente */
+  border-radius: 10px;
+  width: 100% !important;
+  height: 100vh;
+}

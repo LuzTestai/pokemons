@@ -1,43 +1,82 @@
 import {
   IonContent,
-  IonPage,
   IonInput,
   IonLabel,
   IonButton,
+  IonText,
+  IonItem,
+  IonPage,
 } from "@ionic/react";
+import { useState } from "react";
 import "./Login.css";
 
-const Login: React.FC = () => {
+const Login: React.FC<{
+  onLogin: (email: string, password: string) => void;
+}> = ({ onLogin }) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [errors, setErrors] = useState<{ email?: string; password?: string }>(
+    {}
+  );
+
+  const validateEmail = (email: string) => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(String(email).toLowerCase());
+  };
+
+  const handleSubmit = () => {
+    const errors: { email?: string; password?: string } = {};
+
+    if (!validateEmail(email)) {
+      errors.email = "Correo electrónico inválido";
+    }
+    if (password.length < 6) {
+      errors.password = "La contraseña debe tener al menos 6 caracteres";
+    }
+
+    setErrors(errors);
+
+    if (!errors.email && !errors.password) {
+      onLogin(email, password);
+    }
+  };
+
   return (
-    <IonPage>
-      <IonContent className="login-container">
-        <form className="login-form">
-          <div className="input-group">
-            <IonLabel className="custom-label" position="stacked">
-              EMAIL:
-            </IonLabel>
-            <IonInput
-              type="email"
-              placeholder="Ingresa tu email"
-              className="custom-input"
-            />
-          </div>
-          <div className="input-group">
-            <IonLabel className="custom-label" position="stacked">
-              CONTRASEÑA:
-            </IonLabel>
-            <IonInput
-              type="password"
-              placeholder="Ingresa tu contraseña"
-              className="custom-input"
-            />
-          </div>
-          <IonButton expand="block" className="custom-button">
-            Iniciar Sesión
-          </IonButton>
-        </form>
-      </IonContent>
-    </IonPage>
+    <form className="login-form">
+      <div className="input-group">
+        <IonLabel className="custom-label" position="stacked">
+          EMAIL:
+        </IonLabel>
+        <IonInput
+          type="email"
+          value={email}
+          onIonInput={(e: any) => setEmail(e.target.value)}
+          placeholder="Ingresa tu email"
+          className="custom-input"
+        />
+        {errors.email && <IonText color="danger">{errors.email}</IonText>}
+      </div>
+      <div className="input-group">
+        <IonLabel className="custom-label" position="stacked">
+          CONTRASEÑA:
+        </IonLabel>
+        <IonInput
+          type="password"
+          value={password}
+          onIonInput={(e: any) => setPassword(e.target.value)}
+          placeholder="Ingresa tu contraseña"
+          className="custom-input"
+        />
+        {errors.password && <IonText color="danger">{errors.password}</IonText>}
+      </div>
+      <IonButton
+        expand="block"
+        className="custom-button"
+        onClick={handleSubmit}
+      >
+        Iniciar Sesión
+      </IonButton>
+    </form>
   );
 };
 
