@@ -9,10 +9,17 @@ import {
 } from "@ionic/react";
 import "./HomePage.css";
 import { useEffect, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import CardsContainer from "../../components/CardsContainer";
 import { arrowBack, arrowForward } from "ionicons/icons";
 import Filter from "../../components/Filter";
+import { Pokemons } from "../../types/pokemonsTypes";
+import { queryClient } from "../../main";
+
+type PokemonData = {
+  pokemons: Pokemons[];
+  totalPages: number;
+};
 
 const fetchPokemons = async (page: number, limit: number) => {
   const response = await fetch(
@@ -26,28 +33,51 @@ const fetchPokemons = async (page: number, limit: number) => {
 
 const Home: React.FC = () => {
   const limit = 12;
-  const [page, setPage] = useState(1); // Estado de la página actual
-  const { data, error, isLoading } = useQuery({
+  // const [page, setPage] = useState(1);
+  const [page, setPage] = useState<number>(() => {
+    const savedPage = localStorage.getItem("currentPage");
+    return savedPage ? parseInt(savedPage, 10) : 1;
+  });
+  const [searchTerm, setSearchTerm] = useState(""); // Estado para el término de búsqueda
+  const [filteredPokemons, setFilteredPokemons] = useState<Pokemons[]>([]); // Estado para los Pokémon filtrados
+  const { data, error, isLoading } = useQuery<PokemonData>({
     queryKey: ["pokemons", page],
     queryFn: () => fetchPokemons(page, limit),
+    placeholderData: keepPreviousData,
   });
-
+  // Store the current page number in localStorage whenever it changes
   useEffect(() => {
-    console.log("data", data);
-  }, [data]);
+    localStorage.setItem("currentPage", page.toString());
+  }, [page]);
+  // Filtrar solo los Pokémon de la página actual
+  useEffect(() => {
+    if (data && searchTerm) {
+      // Filtrar solo los Pokémon visibles en la página actual
+      const filtered = data.pokemons.filter((pokemon) =>
+        pokemon.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      setFilteredPokemons(filtered);
+    } else if (data) {
+      // Si no hay término de búsqueda, mostrar todos los Pokémon de la página actual
+      setFilteredPokemons(data.pokemons);
+    }
+  }, [searchTerm, data]);
   const handleNextPage = () => {
-    console.log("hice clcik");
     if (data && page < data.totalPages) {
-      console.log("entre al if");
       setPage(page + 1);
+      setSearchTerm("");
     }
   };
 
   const handlePreviousPage = () => {
     if (page > 1) {
       setPage(page - 1);
+      setSearchTerm("");
     }
   };
+  useEffect(() => {
+    console.log("FILTER:", filteredPokemons);
+  }, [filteredPokemons]);
   return (
     <IonPage>
       <IonHeader>
@@ -66,17 +96,16 @@ const Home: React.FC = () => {
           <div className="container-loading">
             <IonLoading
               isOpen={isLoading}
-              //  onDidDismiss={() => setShowLoading(false)}
-              spinner="bubbles" // Opciones creativas: "bubbles", "crescent", "dots", etc.
-              cssClass="custom-loading" // Puedes agregar una clase personalizada
+              spinner="bubbles"
+              cssClass="custom-loading"
             />
           </div>
         ) : error ? (
           <p>Error al cargar los Pokémon</p>
         ) : (
           <>
-            <Filter />
-            <CardsContainer pokemons={data.pokemons} />
+            <Filter searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+            <CardsContainer pokemons={filteredPokemons} />
             <div className="pagination-controls">
               <IonIcon
                 icon={arrowBack}
