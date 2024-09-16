@@ -1,0 +1,38 @@
+.login-container {
+  --background: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.login-form {
+  width: 300px;
+}
+
+.input-group {
+  margin-bottom: 20px;
+}
+
+.custom-label {
+  color: yellow;
+  margin-bottom: 5px;
+}
+
+.custom-input {
+  --color: yellow;
+  --placeholder-color: yellow;
+  --background: transparent;
+  --border-color: yellow;
+  border-bottom: 2px solid yellow;
+}
+
+.custom-button {
+  --background: yellow;
+  --color: black;
+  font-weight: bold;
+}
+
+.custom-button:hover {
+  --background: #ffc107;
+}
