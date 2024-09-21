@@ -1,0 +1,39 @@
+/* RegisterForm.css */
+.form-register {
+  background-color: black;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.container-input {
+  background-color: black;
+  color: #ffc107;
+}
+.input-group {
+  margin-bottom: 20px;
+}
+
+.custom-label {
+  color: rgb(244, 248, 34);
+  margin-bottom: 5px;
+}
+
+.custom-input {
+  --color: rgb(245, 245, 245);
+  --placeholder-color: rgb(250, 250, 250);
+  --background: transparent;
+  --border-color: rgb(250, 250, 247);
+  border-bottom: 2px solid yellow;
+}
+
+.custom-button {
+  background: yellow;
+  color: black;
+  font-weight: bold;
+  margin-top: 30px;
+}
+
+.custom-button:hover {
+  --background: #ffc107;
+}
