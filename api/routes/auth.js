@@ -9,6 +9,7 @@ const users = [
 ];
 
 // Clave secreta para firmar los JWT (esto debe estar en una variable de entorno)
+//const SECRET_KEY = process.env.SECRET_KEY || 'your_default_secret_here';
 const SECRET_KEY = "your_secret_key_here";
 
 // Ruta para iniciar sesión
@@ -56,5 +57,71 @@ function verifyToken(req, res, next) {
     next();
   });
 }
+
+// Ruta para registrar nuevos usuarios
+router.post("/register", async (req, res) => {
+  const { name, lastName, email, password } = req.body;
+
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$/;
+  if (!passwordRegex.test(password)) {
+    return res.status(400).json({
+      message:
+        "La contraseña debe tener al menos 6 caracteres, incluir un número y una mayúscula.",
+    });
+  }
+
+  const userExists = users.some((user) => user.email === email);
+  if (userExists) {
+    return res.status(409).json({ message: "El usuario ya existe" });
+  }
+
+  const hashedPassword = await bcrypt.hash(password, 10);
+  const newUser = {
+    name,
+    lastName,
+    email,
+    password: hashedPassword,
+  };
+  users.push(newUser); // Guardar el nuevo usuario
+
+  // Opcionalmente, crear y enviar un token JWT
+  const token = jwt.sign({ email: newUser.email }, SECRET_KEY, {
+    expiresIn: "24h",
+  });
+
+  res.status(201).json({ user: newUser, token }); // Enviar el nuevo usuario y el token
+});
+// router.post("/register", async (req, res) => {
+//   const { name, lastName, email, password } = req.body;
+//   const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$/;
+
+//   if (!passwordRegex.test(password)) {
+//     return res.status(400).json({
+//       message:
+//         "La contraseña debe tener al menos 6 caracteres, incluir un número y una mayúscula.",
+//     });
+//   }
+
+//   const userExists = users.some((user) => user.email === email);
+//   if (userExists) {
+//     return res.status(409).json({ message: "El usuario ya existe" });
+//   }
+
+//   const hashedPassword = await bcrypt.hash(password, 8);
+//   const newUser = {
+//     name,
+//     lastName,
+//     email,
+//     password: hashedPassword,
+//   };
+//   users.push(newUser);
+
+//   // Opcionalmente, generar un token al registrar
+//   const token = jwt.sign({ email: newUser.email }, SECRET_KEY, {
+//     expiresIn: "24h",
+//   });
+
+//   res.status(201).json({ token });
+// });
 
 module.exports = router;

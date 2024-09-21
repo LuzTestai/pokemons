@@ -5,7 +5,6 @@ import {
   IonButton,
   IonText,
   IonItem,
-  IonPage,
 } from "@ionic/react";
 import { useState } from "react";
 import "./Login.css";
@@ -24,7 +23,8 @@ const Login: React.FC<{
     return re.test(String(email).toLowerCase());
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault(); // Prevenir la recarga de la página
     const errors: { email?: string; password?: string } = {};
 
     if (!validateEmail(email)) {
@@ -42,7 +42,7 @@ const Login: React.FC<{
   };
 
   return (
-    <form className="login-form">
+    <form className="login-form" onSubmit={handleSubmit}>
       <div className="input-group">
         <IonLabel className="custom-label" position="stacked">
           EMAIL:
@@ -69,11 +69,7 @@ const Login: React.FC<{
         />
         {errors.password && <IonText color="danger">{errors.password}</IonText>}
       </div>
-      <IonButton
-        expand="block"
-        className="custom-button"
-        onClick={handleSubmit}
-      >
+      <IonButton expand="block" className="custom-button" type="submit">
         Iniciar Sesión
       </IonButton>
     </form>
