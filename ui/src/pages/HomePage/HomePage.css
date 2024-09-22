@@ -30,3 +30,14 @@ ion-toolbar {
 .loading-wrapper.sc-ion-loading-md {
   box-shadow: none !important;
 }
+.toolbar-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 10px 20px;
+}
+
+.toolbar-logo {
+  max-width: 20%; /* Ajusta este valor según sea necesario */
+}

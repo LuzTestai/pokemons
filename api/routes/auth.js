@@ -2,6 +2,7 @@ const express = require("express");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const router = express.Router();
+require("dotenv").config();
 
 // Credenciales harcodeadas por ahora (esto sería desde una base de datos)
 const users = [
@@ -10,7 +11,9 @@ const users = [
 
 // Clave secreta para firmar los JWT (esto debe estar en una variable de entorno)
 //const SECRET_KEY = process.env.SECRET_KEY || 'your_default_secret_here';
-const SECRET_KEY = "your_secret_key_here";
+//const SECRET_KEY = "your_secret_key_here";
+
+const SECRET_KEY = process.env.SECRET_KEY;
 
 // Ruta para iniciar sesión
 router.post("/login", (req, res) => {
@@ -23,13 +26,13 @@ router.post("/login", (req, res) => {
   }
 
   // Verificar la contraseña
-  const passwordIsValid = bcrypt.compareSync(password, user.password);
+  const passwordIsValid = bcrypt.compare(password, user.password);
   if (!passwordIsValid) {
     return res.status(401).json({ message: "Contraseña incorrecta" });
   }
 
   // Generar un token JWT válido por 24 horas
-  const token = jwt.sign({ email: user.email }, SECRET_KEY, {
+  const token = jwt.sign({ email: user.email, userId: user.id }, SECRET_KEY, {
     expiresIn: "24h",
   });
 

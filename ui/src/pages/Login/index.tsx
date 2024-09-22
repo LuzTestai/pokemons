@@ -8,35 +8,43 @@ import {
 import { useState } from "react";
 import LoginForm from "../../components/Login";
 import "./LoginPage.css";
-import { useHistory } from "react-router-dom"; // Para redirección después del login
+import { useHistory } from "react-router-dom";
 
 const LoginPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showToast, setShowToast] = useState(false);
-  const history = useHistory(); // Para redirección
-
-  // Credenciales harcodeadas
-  const storedUser = { email: "usuario@ejemplo.com", password: "123456" };
+  const history = useHistory();
 
   const handleLogin = (email: string, password: string) => {
     setLoading(true);
-
-    setTimeout(() => {
-      setLoading(false);
-      if (email === storedUser.email && password === storedUser.password) {
-        localStorage.setItem("user", JSON.stringify({ email })); // Guardar el usuario
-        setShowToast(true); // Mostrar mensaje de éxito
-        history.push("/home"); // Redirigir a la página de inicio después del login exitoso
-      } else {
-        setError("Credenciales incorrectas");
-      }
-    }, 1000);
+    fetch("http://localhost:3001/api/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, password }),
+    })
+      .then((response) => {
+        setLoading(false);
+        if (!response.ok) {
+          throw new Error("Error en la autenticación");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        localStorage.setItem("token", data.token);
+        setShowToast(true);
+        history.push("/home");
+      })
+      .catch((error) => {
+        setError(error.message || "Error en la autenticación");
+      });
   };
 
   return (
-    <IonPage className="login-page">
-      <IonTitle className="login-title">Inicio de Sesión</IonTitle>
+    <div className="login-page">
+      <div className="login-title">Inicio de Sesión</div>
       {loading && (
         <IonLoading isOpen={loading} message={"Iniciando sesión..."} />
       )}
@@ -59,7 +67,7 @@ const LoginPage: React.FC = () => {
         color="success"
         onDidDismiss={() => setShowToast(false)}
       />
-    </IonPage>
+    </div>
   );
 };
 

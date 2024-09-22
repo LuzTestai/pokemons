@@ -10,7 +10,7 @@ type UserData = {
     name: string;
     lastName: string;
     email: string;
-    // Supongamos que el backend retorna estos campos
+    password: string;
   };
 };
 

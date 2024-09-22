@@ -15,6 +15,7 @@ import { arrowBack, arrowForward } from "ionicons/icons";
 import Filter from "../../components/Filter";
 import { Pokemons } from "../../types/pokemonsTypes";
 import { queryClient } from "../../main";
+import LogoutButton from "../../components/LogoutButton";
 
 type PokemonData = {
   pokemons: Pokemons[];
@@ -82,13 +83,14 @@ const Home: React.FC = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>
+          <div className="toolbar-content">
             <img
               src="/pokemon-logo-pokemon-icon-transparent-free-png.webp"
               alt="Pokemon Logo"
               style={{ maxWidth: "20%" }}
             />
-          </IonTitle>
+            <LogoutButton />
+          </div>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>

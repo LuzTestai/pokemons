@@ -1,9 +1,11 @@
 .login-page {
-  background-color: #000; /* Fondo negro */
+  background: rgb(8, 8, 8);
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: center;
+  height: 100vh;
+  width: 100%;
 }
 .login-title {
   padding-top: 50px;
