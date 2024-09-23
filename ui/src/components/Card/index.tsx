@@ -5,7 +5,7 @@ import {
   IonCardSubtitle,
   IonCardTitle,
 } from "@ionic/react";
-import { box } from "../../../styled-system/patterns";
+import { useHistory } from "react-router-dom";
 
 import "./CardContainer.css";
 import { Pokemons } from "../../types/pokemonsTypes";
@@ -13,15 +13,16 @@ import { PokemonType, typeColorMap } from "../../constants/typeColors";
 import { useEffect, useState } from "react";
 
 type PokemonCardProps = {
-  pokemon: Pokemons; // El tipo 'Pokemon' que definimos
+  pokemon: Pokemons;
 };
 
 const Card: React.FC<PokemonCardProps> = ({ pokemon }) => {
-  const [loading, setLoading] = useState(true); // Estado local para manejar el "loading"
+  const history = useHistory();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (pokemon && pokemon.types) {
-      setLoading(false); // Cuando los datos están listos, cambiamos loading a false
+      setLoading(false);
     }
   }, [pokemon]);
 
@@ -30,6 +31,11 @@ const Card: React.FC<PokemonCardProps> = ({ pokemon }) => {
   }
   const primaryType = pokemon.types[0].toLowerCase();
   const backgroundColor = typeColorMap[primaryType as PokemonType] || "#87b8fb";
+
+  const handleDetailClick = () => {
+    history.push(`/pokemon-detail/${pokemon.id}`);
+  };
+
   return (
     <div>
       <IonCard
@@ -37,6 +43,7 @@ const Card: React.FC<PokemonCardProps> = ({ pokemon }) => {
         style={{
           backgroundColor: backgroundColor,
         }}
+        onClick={handleDetailClick}
       >
         <IonCardHeader className="centered-card-header">
           <IonCardTitle>

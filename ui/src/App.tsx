@@ -3,6 +3,8 @@ import { IonApp, IonRouterOutlet, setupIonicReact } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
 import Home from "./pages/HomePage";
 import Register from "./pages/Register";
+import PokemonPage from "./pages/DetailPage";
+import Layout from "./components/Layout";
 import PrivateRoute from "./components/PrivateRoutes";
 
 import "@ionic/react/css/core.css";
@@ -30,10 +32,13 @@ const App: React.FC = () => (
       <IonRouterOutlet>
         <Route exact path="/register" component={Register} />
         <Route exact path="/login" component={Login} />
-        <PrivateRoute exact path="/home" component={Home} />
         <Route exact path="/">
           <Redirect to="/login" />
         </Route>
+        <Layout>
+          <PrivateRoute exact path="/home" component={Home} />
+          <Route path="/pokemon-detail/:id" component={PokemonPage} />
+        </Layout>
       </IonRouterOutlet>
     </IonReactRouter>
   </IonApp>
