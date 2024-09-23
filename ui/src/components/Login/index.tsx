@@ -8,10 +8,12 @@ import {
 } from "@ionic/react";
 import { useState } from "react";
 import "./Login.css";
+import { useHistory } from "react-router";
 
 const Login: React.FC<{
   onLogin: (email: string, password: string) => void;
 }> = ({ onLogin }) => {
+  const history = useHistory();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState<{ email?: string; password?: string }>(
@@ -41,6 +43,10 @@ const Login: React.FC<{
     }
   };
 
+  const goToRegister = () => {
+    console.log("clickie");
+    history.push("/register");
+  };
   return (
     <form className="login-form" onSubmit={handleSubmit}>
       <div className="input-group">
@@ -71,6 +77,14 @@ const Login: React.FC<{
       </div>
       <IonButton expand="block" className="custom-button" type="submit">
         Iniciar Sesión
+      </IonButton>
+      <IonButton
+        expand="block"
+        className="custom-button"
+        type="button"
+        onClick={goToRegister}
+      >
+        Crear cuenta
       </IonButton>
     </form>
   );

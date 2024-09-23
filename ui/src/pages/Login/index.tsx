@@ -1,44 +1,42 @@
-import {
-  IonPage,
-  IonToast,
-  IonTitle,
-  IonLoading,
-  IonContent,
-} from "@ionic/react";
+import { IonToast, IonLoading } from "@ionic/react";
+import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import LoginForm from "../../components/Login";
 import "./LoginPage.css";
-import { useHistory } from "react-router-dom"; // Para redirección después del login
+import { useHistory } from "react-router-dom";
+import { LoginData, LoginDataResponse } from "./types";
+import { loginData } from "./utils";
 
-const LoginPage: React.FC = () => {
-  const [loading, setLoading] = useState(false);
+const LoginPage = () => {
   const [error, setError] = useState<string | null>(null);
   const [showToast, setShowToast] = useState(false);
-  const history = useHistory(); // Para redirección
+  const history = useHistory();
 
-  // Credenciales harcodeadas
-  const storedUser = { email: "usuario@ejemplo.com", password: "123456" };
+  const { mutate, isPending } = useMutation<
+    LoginDataResponse,
+    Error,
+    LoginData
+  >({
+    mutationFn: loginData,
+    onSuccess: (data: LoginDataResponse) => {
+      localStorage.setItem("token", data.token);
+      setShowToast(true);
+      history.push("/home");
+    },
+    onError: (error: any) => {
+      setError(error.message || "Error en la autenticación");
+    },
+  });
 
   const handleLogin = (email: string, password: string) => {
-    setLoading(true);
-
-    setTimeout(() => {
-      setLoading(false);
-      if (email === storedUser.email && password === storedUser.password) {
-        localStorage.setItem("user", JSON.stringify({ email })); // Guardar el usuario
-        setShowToast(true); // Mostrar mensaje de éxito
-        history.push("/home"); // Redirigir a la página de inicio después del login exitoso
-      } else {
-        setError("Credenciales incorrectas");
-      }
-    }, 1000);
+    mutate({ email, password });
   };
 
   return (
-    <IonPage className="login-page">
-      <IonTitle className="login-title">Inicio de Sesión</IonTitle>
-      {loading && (
-        <IonLoading isOpen={loading} message={"Iniciando sesión..."} />
+    <div className="login-page">
+      <div className="login-title">Inicio de Sesión</div>
+      {isPending && (
+        <IonLoading isOpen={isPending} message={"Iniciando sesión..."} />
       )}
 
       <LoginForm onLogin={handleLogin} />
@@ -59,7 +57,7 @@ const LoginPage: React.FC = () => {
         color="success"
         onDidDismiss={() => setShowToast(false)}
       />
-    </IonPage>
+    </div>
   );
 };
 

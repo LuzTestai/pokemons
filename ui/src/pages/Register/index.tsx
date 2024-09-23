@@ -11,7 +11,7 @@ const Register: React.FC = () => {
   const history = useHistory();
   const [showToast, setShowToast] = useState(false);
 
-  const { mutate, isError, isPending, error } = useMutation<
+  const { mutate, isPending, error } = useMutation<
     UserData,
     Error,
     UserCredentials
@@ -20,7 +20,7 @@ const Register: React.FC = () => {
     onSuccess: (data) => {
       localStorage.setItem("user", JSON.stringify(data.user));
       setShowToast(true);
-      history.push("/home");
+      history.push("/login");
     },
     onError: (error) => {
       console.error("Registration failed:", error);
@@ -38,7 +38,7 @@ const Register: React.FC = () => {
 
   return (
     <div className="register-page">
-      <IonTitle className="register-title">Registro</IonTitle>
+      <div className="register-title">Registro</div>
       {isPending && (
         <IonLoading isOpen={isPending} message={"Registrando..."} />
       )}

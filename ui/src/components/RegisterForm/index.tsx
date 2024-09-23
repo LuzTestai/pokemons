@@ -32,6 +32,7 @@ const RegisterForm: React.FC<{
           }
           required
           className="custom-input"
+          placeholder="Nombre"
         />
       </div>
       <div className="input-group">
@@ -45,6 +46,7 @@ const RegisterForm: React.FC<{
           }
           required
           className="custom-input"
+          placeholder="Apellido"
         />
       </div>
       <div className="input-group">
@@ -59,6 +61,7 @@ const RegisterForm: React.FC<{
           }
           required
           className="custom-input"
+          placeholder="Email.."
         />
       </div>
       <div className="input-group">
@@ -73,6 +76,7 @@ const RegisterForm: React.FC<{
           }
           required
           className="custom-input"
+          placeholder="Contraseña"
         />
       </div>
       <IonButton className="custom-button" expand="block" type="submit">
