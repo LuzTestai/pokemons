@@ -30,13 +30,6 @@ const App: React.FC = () => (
       <IonRouterOutlet>
         <Route exact path="/register" component={Register} />
         <Route exact path="/login" component={Login} />
-        {/* <Route
-          exact
-          path="/dashboard"
-          render={() => {
-            return localStorage.getItem("token") ? <Home /> : <Login />;
-          }}
-        /> */}
         <PrivateRoute exact path="/home" component={Home} />
         <Route exact path="/">
           <Redirect to="/login" />

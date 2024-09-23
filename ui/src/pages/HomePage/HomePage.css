@@ -1,8 +1,8 @@
 ion-content::part(background) {
-  background-color: #000003; /* Cambia el fondo */
+  background-color: #000003;
 }
 ion-toolbar {
-  --background: #000003ee; /* Color de fondo */
+  --background: #000003ee;
 }
 .pagination-controls {
   display: flex;
@@ -21,11 +21,11 @@ ion-toolbar {
   justify-content: center;
 }
 .custom-loading {
-  --background: transparent; /* Fondo transparente */
+  --background: transparent;
   --spinner-color: #fcff00;
 }
 .custom-loading .spinner-bubbles {
-  transform: scale(1.5); /* Ajusta el tamaño del spinner */
+  transform: scale(1.5);
 }
 .loading-wrapper.sc-ion-loading-md {
   box-shadow: none !important;
