@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from "react";
-import Card from "../Card"; // Importa el componente Card
+import Card from "../Card";
 import { Pokemons } from "../../types/pokemonsTypes";
 import { IonGrid, IonRow, IonCol } from "@ionic/react";
 
 type CardsContainerProps = {
-  pokemons: Pokemons[]; // Lista de Pokémon que se pasan como props
+  pokemons: Pokemons[];
 };
 
 const CardsContainer: React.FC<CardsContainerProps> = ({ pokemons }) => {
-  const [loading, setLoading] = useState(true); // Estado local para manejar el "loading"
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (pokemons) {
-      setLoading(false); // Cuando los datos están listos, cambiamos loading a false
+      setLoading(false);
     }
   }, [pokemons]);
 
